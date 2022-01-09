@@ -25,7 +25,7 @@ V_0 = sqrt(params.mu / R_0);
 V_0_vect = V_0 * [0;-sin(alpha_0);cos(alpha_0)];
 
 psi_0 = 0;
-theta_0 = pi/2;
+theta_0 = pi;
 phi_0 = 0;
 B_psi_0 = [cos(psi_0), -sin(psi_0), 0;
          sin(psi_0), cos(psi_0), 0;
@@ -81,7 +81,7 @@ for i=2:N
     A(:,:,i) = [j1_vect, j2_vect, j3_vect];
     Omegas(1:3, i) = cross(R_vect, V_vect)/norm(R_vect).^2;
     w_abs_BF = x(7:9, i);
-    C_tmp = quat2dcm(x(10:13, i)')';
+    C_tmp = quat2dcm(x(10:13, i)');
     omegas_relative(1:3, i) = w_abs_BF - C_tmp * Omegas(1:3, i);
 end
 %disp(A(:,:,5));
@@ -91,11 +91,17 @@ disp(omegas_relative(:, 6));
 disp(omegas_relative(:, 7));
 fprintf("norms: %f, %f, %f\n", norm(omegas_relative(:, 5)), norm(omegas_relative(:, 6)), norm(omegas_relative(:, 7)));
 
-
-
-
 figure
 hold on
 grid on
 axis equal
 plot(x(2,:), x(3,:));
+Qs = zeros(3, N); % векторные части кватернионов
+for i=1:N
+    C_tmp = quat2dcm(x(10:13, i)');
+    Qs(:, i) = C_tmp * x(11:13, i);
+    fprintf("(%f, %f, %f)\n", Qs(1,i), Qs(2,i), Qs(3, i));
+end
+
+
+
