@@ -48,7 +48,7 @@ C_0 = A_0 * B_0;
 w_0_vect = [dot_psi0*sin(theta_0)*sin(phi_0) + dot_theta0*cos(phi_0);
       dot_psi0*sin(theta_0)*cos(phi_0) - dot_theta0*sin(phi_0);
       dot_psi0*cos(theta_0) + dot_phi0];
-w_0_vect = C_0'*w_0_vect + cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
+w_0_vect = w_0_vect + C_0' * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
 Q_0 = dcm2quat(C_0');
 
 x = zeros(13, N);
@@ -80,10 +80,10 @@ for i=2:N
     j1_vect = cross(j2_vect, j3_vect);
     A(:,:,i) = [j1_vect, j2_vect, j3_vect];
     Omegas(1:3, i) = cross(R_vect, V_vect)/norm(R_vect).^2;
-    w_abs = x(7:9, i);
+    w_abs_BF = x(7:9, i);
     C_tmp = quat2dcm(x(10:13, i)')';
-    B_tmp = A(1:3, i)' * C_tmp;
-    omegas_relative(1:3, i) = w_abs - Omegas(1:3, i);
+    %B_tmp = A(1:3, i)' * C_tmp;
+    omegas_relative(1:3, i) = w_abs_BF - C_tmp * Omegas(1:3, i);
 end
 %disp(A(:,:,5));
 %disp(Omegas(:, 5));
