@@ -4,7 +4,7 @@ R_vect = x(1:3);
 V_vect = x(4:6);
 w_vect_BF = x(7:9);
 Q = x(10:13)';
-IF2BF = quat2dcm(Q)';
+IF2BF = quat2dcm(Q);
 
 j3_IF = R_vect / norm(R_vect);
 j3_BF = IF2BF * j3_IF;

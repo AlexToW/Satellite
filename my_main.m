@@ -99,7 +99,7 @@ axis equal
 plot(x(2,:), x(3,:));
 Qs = zeros(3, N); % векторные части кватернионов
 for i=1:N
-    C_tmp = quat2dcm(x(10:13, i)')';
+    C_tmp = quat2dcm(x(10:13, i)');
     Qs(:, i) = C_tmp * x(11:13, i);
     fprintf("(%f, %f, %f)\n", Qs(1,i), Qs(2,i), Qs(3, i));
 end
