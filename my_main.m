@@ -36,8 +36,8 @@ B_phi_0 = [cos(phi_0), -sin(phi_0), 0;
          sin(phi_0), cos(phi_0),  0;
          0,         0,        1];
 B_0 = B_psi_0 * B_theta_0 * B_phi_0;
-j1_0 = V_0_vect/norm(V_vect);
-j3_0 = R_0_vect/norm(R_vect);
+j1_0 = V_0_vect/norm(V_0_vect);
+j3_0 = R_0_vect/norm(R_0_vect);
 j2_0 = cross(j3_0, j1_0);
 j2_0 = j2_0/norm(j2_0);
 A_0 = [j1_0, j2_0, j3_0];
@@ -63,7 +63,8 @@ for i = 1:N-1
 end
 
 
-A = A_0;
+A = zeros(3,3,N);
+A(:,:,1) = A_0;
 Omegas = zeros(3, N); % угловая скорость орбиталки
 omegas_relative = zeros(3, N); % относительная угл. ск-ть
 Omegas(1:3, 1) = w_0_vect;
