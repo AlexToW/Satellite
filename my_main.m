@@ -82,7 +82,6 @@ for i=2:N
     Omegas(1:3, i) = cross(R_vect, V_vect)/norm(R_vect).^2;
     w_abs_BF = x(7:9, i);
     C_tmp = quat2dcm(x(10:13, i)')';
-    %B_tmp = A(1:3, i)' * C_tmp;
     omegas_relative(1:3, i) = w_abs_BF - C_tmp * Omegas(1:3, i);
 end
 %disp(A(:,:,5));
