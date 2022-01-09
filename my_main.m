@@ -23,8 +23,6 @@ R_0_vect = R_0 * [0; cos(alpha_0); sin(alpha_0)];
 V_0 = sqrt(params.mu / R_0);
 V_0_vect = V_0 * [0;-sin(alpha_0);cos(alpha_0)];
 
-
-
 psi_0 = 0;
 theta_0 = pi/2;
 phi_0 = 0;
@@ -41,7 +39,7 @@ B_0 = B_psi_0 * B_theta_0 * B_phi_0;
 j1_0 = V_0_vect/norm(V_vect);
 j3_0 = R_0_vect/norm(R_vect);
 j2_0 = cross(j3_0, j1_0);
-
+A_0 = [j1_0, j2_0, j3_0];
 C_0 = A_0 * B_0;
 
 w_0_vect = [dot_psi0*sin(theta_0)*sin(phi_0) + dot_theta0*cos(phi_0);
