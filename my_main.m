@@ -1,5 +1,6 @@
 clear all;
 close all;
+clc;
 
 dt = 0.5;
 t_end = 15000;
@@ -40,6 +41,7 @@ j1_0 = V_0_vect/norm(V_0_vect);
 j3_0 = R_0_vect/norm(R_0_vect);
 j2_0 = cross(j3_0, j1_0);
 j2_0 = j2_0/norm(j2_0);
+j1_0 = cross(j2_0, j3_0);
 A_0 = [j1_0, j2_0, j3_0];
 C_0 = A_0 * B_0;
 
@@ -74,6 +76,8 @@ for i=2:N
     j1_vect = V_vect/norm(V_vect);
     j3_vect = R_vect/norm(R_vect);
     j2_vect = cross(j3_vect, j1_vect);
+    j2_vect = j2_vect/norm(j2_vect);
+    j1_vect = cross(j2_vect, j3_vect);
     A(:,:,i) = [j1_vect, j2_vect, j3_vect];
     Omegas(1:3, i) = cross(R_vect, V_vect)/norm(R_vect).^2;
     w_abs = x(7:9, i);
