@@ -45,10 +45,11 @@ j1_0 = cross(j2_0, j3_0);
 A_0 = [j1_0, j2_0, j3_0];
 C_0 = A_0 * B_0;
 
-w_0_vect = [dot_psi0*sin(theta_0)*sin(phi_0) + dot_theta0*cos(phi_0);
-      dot_psi0*sin(theta_0)*cos(phi_0) - dot_theta0*sin(phi_0);
-      dot_psi0*cos(theta_0) + dot_phi0];
-w_0_vect = w_0_vect + C_0' * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
+% w_0_vect = [dot_psi0*sin(theta_0)*sin(phi_0) + dot_theta0*cos(phi_0);
+%       dot_psi0*sin(theta_0)*cos(phi_0) - dot_theta0*sin(phi_0);
+%       dot_psi0*cos(theta_0) + dot_phi0];
+w_0_vect = [0;0;0];
+w_0_vect = w_0_vect + C_0 * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
 Q_0 = dcm2quat(C_0');
 
 x = zeros(13, N);
@@ -98,7 +99,7 @@ axis equal
 plot(x(2,:), x(3,:));
 Qs = zeros(3, N); % векторные части кватернионов
 for i=1:N
-    C_tmp = quat2dcm(x(10:13, i)');
+    C_tmp = quat2dcm(x(10:13, i)')';
     Qs(:, i) = C_tmp * x(11:13, i);
     fprintf("(%f, %f, %f)\n", Qs(1,i), Qs(2,i), Qs(3, i));
 end
