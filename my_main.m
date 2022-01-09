@@ -1,3 +1,4 @@
+clear all;
 close all;
 
 dt = 0.5;
@@ -21,6 +22,8 @@ alpha_0 = pi/6;
 R_0_vect = R_0 * [0; cos(alpha_0); sin(alpha_0)];
 V_0 = sqrt(params.mu / R_0);
 V_0_vect = V_0 * [0;-sin(alpha_0);cos(alpha_0)];
+
+
 
 psi_0 = 0;
 theta_0 = pi/2;
