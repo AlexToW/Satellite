@@ -18,10 +18,10 @@ dot_theta0 = 0.1;
 dot_psi0 = 0.3;
 dot_phi0 = 0.1;
 
-R_0 = 6.371 * 10.^6;
+R_0 = 6.371 * 10.^6; % радиус Земли
 alpha_0 = pi/6;
 R_0_vect = R_0 * [0; cos(alpha_0); sin(alpha_0)];
-V_0 = sqrt(params.mu / R_0);
+V_0 = sqrt(params.mu / R_0); % первая космическая
 V_0_vect = V_0 * [0;-sin(alpha_0);cos(alpha_0)];
 
 psi_0 = 0;
@@ -37,6 +37,7 @@ B_phi_0 = [cos(phi_0), -sin(phi_0), 0;
          sin(phi_0), cos(phi_0),  0;
          0,         0,        1];
 B_0 = B_psi_0 * B_theta_0 * B_phi_0;
+% орбитальная СК
 j1_0 = V_0_vect/norm(V_0_vect);
 j3_0 = R_0_vect/norm(R_0_vect);
 j2_0 = cross(j3_0, j1_0);
@@ -45,15 +46,13 @@ j1_0 = cross(j2_0, j3_0);
 A_0 = [j1_0, j2_0, j3_0];
 C_0 = A_0 * B_0;
 
-% w_0_vect = [dot_psi0*sin(theta_0)*sin(phi_0) + dot_theta0*cos(phi_0);
-%       dot_psi0*sin(theta_0)*cos(phi_0) - dot_theta0*sin(phi_0);
-%       dot_psi0*cos(theta_0) + dot_phi0];
+
 w_0_vect = [0;0;0];
 w_0_vect = w_0_vect + C_0 * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
 Q_0 = dcm2quat(C_0');
 
+% фазовый вектор
 x = zeros(13, N);
-
 x(:, 1) = [R_0_vect; V_0_vect; w_0_vect; Q_0'];
 
 for i = 1:N-1
