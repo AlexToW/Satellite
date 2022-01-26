@@ -25,7 +25,7 @@ V_0 = sqrt(params.mu / R_0); % первая космическая
 V_0_vect = V_0 * [0;-sin(alpha_0);cos(alpha_0)];
 
 psi_0 = 0;
-theta_0 = pi;
+theta_0 = 0;
 phi_0 = 0;
 B_psi_0 = [cos(psi_0), -sin(psi_0), 0;
          sin(psi_0), cos(psi_0), 0;
@@ -48,7 +48,7 @@ C_0 = A_0 * B_0;
 
 
 % w_0_vect -- абсолютная угловая скорость в ССК при t=0
-w_0_vect_rel = [0;0;0]; % относительная скорость в ССК при t=0
+w_0_vect_rel = [1;0;0]; % относительная скорость в ССК при t=0
 w_0_vect = w_0_vect_rel + C_0 * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
 Q_0 = dcm2quat(C_0');
 
@@ -66,43 +66,29 @@ for i = 1:N-1
 end
 
 
-A = zeros(3,3,N);
-A(:,:,1) = A_0;
-Omegas = zeros(3, N); % угловая скорость орбиталки
-omegas_relative = zeros(3, N); % относительная угл. ск-ть
-Omegas(1:3, 1) = w_0_vect;
+Omegas_orb = zeros(3, N); % угловая скорость орбиталки в ИСК
+omegas_relative = zeros(3, N); % относительная угл. ск-ть в ССК
+Omegas_orb(1:3, 1) = cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
 for i=2:N
-    V_vect = x(4:6, i);
-    R_vect = x(1:3, i);
-    j1_vect = V_vect/norm(V_vect);
-    j3_vect = R_vect/norm(R_vect);
-    j2_vect = cross(j3_vect, j1_vect);
-    j2_vect = j2_vect/norm(j2_vect);
-    j1_vect = cross(j2_vect, j3_vect);
-    A(:,:,i) = [j1_vect, j2_vect, j3_vect];
-    Omegas(1:3, i) = cross(R_vect, V_vect)/norm(R_vect).^2;
+    V_vect = x(4:6, i); % в ИСК
+    R_vect = x(1:3, i); % в ИСК
+    C_tmp = quat2dcm(x(10:13, i)')';
+    Omegas_orb(1:3, i) = cross(R_vect, V_vect)/norm(R_vect).^2;
     w_abs_BF = x(7:9, i);
-    C_tmp = quat2dcm(x(10:13, i)');
-    omegas_relative(1:3, i) = w_abs_BF - C_tmp * Omegas(1:3, i);
+    omegas_relative(1:3, i) = w_abs_BF - C_tmp * Omegas_orb(1:3, i);
+    fprintf("(");
+    for j=1:3
+        fprintf("%f, ", omegas_relative(j, i));
+    end
+    fprintf(")\n");
 end
-%disp(A(:,:,5));
-%disp(Omegas(:, 5));
-disp(omegas_relative(:, 5));
-disp(omegas_relative(:, 6));
-disp(omegas_relative(:, 7));
-fprintf("norms: %f, %f, %f\n", norm(omegas_relative(:, 5)), norm(omegas_relative(:, 6)), norm(omegas_relative(:, 7)));
 
 figure
 hold on
 grid on
 axis equal
 plot(x(2,:), x(3,:));
-Qs = zeros(3, N); % векторные части кватернионов
-for i=1:N
-    C_tmp = quat2dcm(x(10:13, i)');
-    Qs(:, i) = C_tmp * x(11:13, i);
-    fprintf("(%f, %f, %f)\n", Qs(1,i), Qs(2,i), Qs(3, i));
-end
+
 
 
 
