@@ -47,8 +47,9 @@ A_0 = [j1_0, j2_0, j3_0];
 C_0 = A_0 * B_0;
 
 
-w_0_vect = [0;0;0];
-w_0_vect = w_0_vect + C_0 * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
+% w_0_vect -- абсолютная угловая скорость в ССК при t=0
+w_0_vect_rel = [0;0;0]; % относительная скорость в ССК при t=0
+w_0_vect = w_0_vect_rel + C_0 * cross(R_0_vect, V_0_vect)/norm(R_0_vect).^2;
 Q_0 = dcm2quat(C_0');
 
 % фазовый вектор
